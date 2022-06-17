@@ -23,6 +23,7 @@ buttons.forEach(button => {
         buttonType = e.target.dataset.role;
         clearButtonValue = buttonValue;
         filterInput();
+        log();
     })
 });
 window.addEventListener('keydown', filterKeyboardInput)
@@ -130,19 +131,18 @@ function filterInput(){
             a = result;
             result = "";
             temp = "";
+            b = "";
             isEqualPressed = false;
             showNumbersInDisplay();
         } else {
-            storeValuesInOperands();
             isDigitPressed = false;
             isEqualPressed = false;
-            if(result != "" && !isDigitPressed){
-                if(temp != result){
-                    a = temp;
-                } else {
-                    a = result;
-                }
-            };
+            if(b !=""){
+                a = result;
+                b = "";
+                return;
+            }
+            storeValuesInOperands();
             execute();
             operator = buttonValue;
             temp = "";
@@ -197,7 +197,7 @@ function storeValuesInOperands(){
 }
 // Execute calculation based on operands and toggles position
 function execute(){
-    if(a !="" && b != "" && operator != "" &&isEqualPressed){
+    if(a !="" && b != "" && operator != "" && isEqualPressed){
         result = operate(a, b, operator);
         checkResult();
         temp = result;
@@ -345,4 +345,15 @@ function clear(clearButtonValue){
         }
     }
 }
-
+function log(){
+    console.log(`
+    a = ${a}
+    b = ${b}
+    operator = ${operator}
+    result = ${result}
+    temp = ${temp}
+    equal = ${isEqualPressed}
+    digit = ${isDigitPressed}
+    operation = ${isOperationPressed}
+    `)
+}
